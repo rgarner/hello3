@@ -121,10 +121,7 @@ Roller = (function() {
     return this.renderer.render(this.scene, this.camera);
   };
 
-  Roller.prototype.renderLoop = function(animate) {
-    if (animate == null) {
-      animate = true;
-    }
+  Roller.prototype.renderLoop = function() {
     this.update();
     requestAnimationFrame(this.renderLoop);
     return this.render();

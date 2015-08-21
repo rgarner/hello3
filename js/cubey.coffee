@@ -85,7 +85,7 @@ class Roller
 	render: =>
 		@renderer.render(@scene, @camera)
 
-	renderLoop: (animate = true) =>
+	renderLoop: =>
 		@update()
 		requestAnimationFrame(@renderLoop)
 

@@ -9,9 +9,12 @@
 	<body>
 		<script src="js/three.min.js"></script>
 		<script src="js/OrbitControls.js"></script>
+		<script src="js/three.stl_loader.js"></script>
 		<script src="js/cubey.js"></script>
 		<script type="text/javascript">
-			new Roller().renderLoop()
+			var roller = new Roller()
+			window.roller = roller;
+			roller.renderLoop()
 		</script>
 	</body>
 </html>

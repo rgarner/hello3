@@ -18,9 +18,9 @@ Roller = (function() {
     this.render = bind(this.render, this);
     this.update = bind(this.update, this);
     this.onWindowResize = bind(this.onWindowResize, this);
-    var j, k, len, len1, light, ref, ref1, thing;
+    var j, k, len, len1, light, loader, ref, ref1, thing;
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000);
+    this.camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 1000);
     this.renderer = new THREE.WebGLRenderer();
     this.controls = new THREE.OrbitControls(this.camera);
     this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -33,6 +33,22 @@ Roller = (function() {
     }
     this.stars = generateStars();
     this.scene.add(this.stars);
+    loader = new THREE.STLLoader();
+    loader.load('model/isscombined.stl', (function(_this) {
+      return function(geometry) {
+        var material;
+        material = new THREE.MeshLambertMaterial({
+          color: 0xFFFFFF
+        });
+        _this.iss = new THREE.Mesh(geometry, material);
+        _this.iss.rotation.x = 45;
+        _this.iss.rotation.y = 15;
+        _this.iss.position.y = 35;
+        _this.iss.position.x = -35;
+        _this.iss.position.z = 115;
+        return _this.scene.add(_this.iss);
+      };
+    })(this));
     this.camera.position.z = 200;
     ref1 = generateLights();
     for (k = 0, len1 = ref1.length; k < len1; k++) {
@@ -43,11 +59,9 @@ Roller = (function() {
   }
 
   Roller.prototype.onWindowResize = function() {
-    console.log('foo');
     this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
-    return console.log('bar');
+    return this.renderer.setSize(window.innerWidth, window.innerHeight);
   };
 
   generateLights = function() {
@@ -57,8 +71,8 @@ Roller = (function() {
     redLight.position.set(30, 20, 20);
     blueLight = new THREE.PointLight(0x0000ff, 1, 1000);
     blueLight.position.set(-30, -20, -20);
-    whiteLight = new THREE.PointLight(0xffffff, 1, 1000);
-    whiteLight.position.set(30, 80, 20);
+    whiteLight = new THREE.PointLight(0xffffdd, 1, 1000);
+    whiteLight.position.set(30, 80, 150);
     return [ambientLight, redLight, blueLight, whiteLight];
   };
 
@@ -66,14 +80,15 @@ Roller = (function() {
     var geometry, j, material, r, ref, results, thing;
     geometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
     material = new THREE.MeshPhongMaterial({
-      wireframe: true,
-      wireframeLinewidth: 4
+      wireframe: false,
+      wireframeLinewidth: 1
     });
     results = [];
     for (r = j = 1, ref = numberOfThings; 1 <= ref ? j <= ref : j >= ref; r = 1 <= ref ? ++j : --j) {
       thing = new THREE.Mesh(geometry, material);
       thing.position.x = r * cubeSize - numberOfThings * 5;
       thing.rotation.x = r / numberOfThings * Math.PI / 2;
+      thing.index = r;
       results.push(thing);
     }
     return results;
@@ -91,7 +106,11 @@ Roller = (function() {
         }
         return results;
       })();
-      star = new THREE.Vector3(xyz[0], xyz[1], xyz[2]);
+      star = (function(func, args, ctor) {
+        ctor.prototype = func.prototype;
+        var child = new ctor, result = func.apply(child, args);
+        return Object(result) === result ? result : child;
+      })(THREE.Vector3, xyz, function(){});
       starGeo.vertices.push(star);
     }
     material = new THREE.PointCloudMaterial({
@@ -106,7 +125,7 @@ Roller = (function() {
   };
 
   rotate = function(thing) {
-    return thing.rotation.x += rotateBy;
+    return thing.rotation.x += rotateBy * thing.index / 30;
   };
 
   Roller.prototype.update = function() {

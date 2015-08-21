@@ -6,6 +6,7 @@ class Explody
 		size: 2
 		fadeDistance: 300
 		random: false
+		initialSphereRadius: 5
 	}
 
 	constructor: ->
@@ -68,6 +69,7 @@ class Explody
 			point = new THREE.Vector3(0,0,0)
 			pointGeo.vertices.push(point)
 			vector = new THREE.Vector3((randomVectorComponent() for i in [1..3])...)
+			vector.setLength(params.initialSphereRadius * Math.random() * 2)
 			pointGeo.vectors.push(vector)
 			pointGeo.colors.push(new THREE.Color(0xffffff))
 		

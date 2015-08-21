@@ -10,7 +10,8 @@ Explody = (function() {
     speed: 2,
     size: 2,
     fadeDistance: 300,
-    random: false
+    random: false,
+    initialSphereRadius: 5
   };
 
   function Explody() {
@@ -105,6 +106,7 @@ Explody = (function() {
         }
         return results;
       })(), function(){});
+      vector.setLength(params.initialSphereRadius * Math.random() * 2);
       pointGeo.vectors.push(vector);
       pointGeo.colors.push(new THREE.Color(0xffffff));
     }

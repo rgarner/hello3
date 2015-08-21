@@ -1,12 +1,12 @@
 class Explody
 
 	params = {	
-		numberOfParticles: 5000
-		speed: 2
-		size: 2
+		numberOfParticles: 2000
+		speed: 5
+		size: 5
 		fadeDistance: 300
 		random: false
-		initialSphereRadius: 5
+		spherical: true
 	}
 
 	constructor: ->
@@ -50,15 +50,15 @@ class Explody
 		@gui = new dat.GUI({
 		    height : 5 * 32 - 1
 		});
-		@gui.add(params, 'numberOfParticles').min(100).max(50000).step(100).onFinishChange =>
+		@gui.add(params, 'numberOfParticles').min(100).max(30000).step(100).onFinishChange =>
 			@reInit()
 		@gui.add(params, 'size').min(0.5).max(10).step(0.3).onFinishChange =>
 			@reInit()
-		@gui.add(params, 'speed').min(0.5).max(10).step(0.5).onFinishChange =>
+		@gui.add(params, 'speed').min(0.5).max(50).step(0.5).onFinishChange =>
 			@reInit()
 		@gui.add(params, 'fadeDistance').min(50).max(1000).step(10)
-		@gui.add(params, 'random').onFinishChange =>
-			@reInit()
+		@gui.add(params, 'spherical').onFinishChange => @reInit()
+		@gui.add(params, 'random').onFinishChange => @reInit()
 
 	generateParticles = ->
 		randomVectorComponent = -> Math.random() * 2 * params.speed - params.speed
@@ -69,7 +69,7 @@ class Explody
 			point = new THREE.Vector3(0,0,0)
 			pointGeo.vertices.push(point)
 			vector = new THREE.Vector3((randomVectorComponent() for i in [1..3])...)
-			vector.setLength(params.initialSphereRadius * Math.random() * 2)
+			vector.setLength(params.speed * Math.random() * 3) if params.spherical
 			pointGeo.vectors.push(vector)
 			pointGeo.colors.push(new THREE.Color(0xffffff))
 		

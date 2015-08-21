@@ -6,12 +6,12 @@ Explody = (function() {
   var generateParticles, params;
 
   params = {
-    numberOfParticles: 5000,
-    speed: 2,
-    size: 2,
+    numberOfParticles: 2000,
+    speed: 5,
+    size: 5,
     fadeDistance: 300,
     random: false,
-    initialSphereRadius: 5
+    spherical: true
   };
 
   function Explody() {
@@ -61,7 +61,7 @@ Explody = (function() {
     this.gui = new dat.GUI({
       height: 5 * 32 - 1
     });
-    this.gui.add(params, 'numberOfParticles').min(100).max(50000).step(100).onFinishChange((function(_this) {
+    this.gui.add(params, 'numberOfParticles').min(100).max(30000).step(100).onFinishChange((function(_this) {
       return function() {
         return _this.reInit();
       };
@@ -71,12 +71,17 @@ Explody = (function() {
         return _this.reInit();
       };
     })(this));
-    this.gui.add(params, 'speed').min(0.5).max(10).step(0.5).onFinishChange((function(_this) {
+    this.gui.add(params, 'speed').min(0.5).max(50).step(0.5).onFinishChange((function(_this) {
       return function() {
         return _this.reInit();
       };
     })(this));
     this.gui.add(params, 'fadeDistance').min(50).max(1000).step(10);
+    this.gui.add(params, 'spherical').onFinishChange((function(_this) {
+      return function() {
+        return _this.reInit();
+      };
+    })(this));
     return this.gui.add(params, 'random').onFinishChange((function(_this) {
       return function() {
         return _this.reInit();
@@ -106,7 +111,9 @@ Explody = (function() {
         }
         return results;
       })(), function(){});
-      vector.setLength(params.initialSphereRadius * Math.random() * 2);
+      if (params.spherical) {
+        vector.setLength(params.speed * Math.random() * 3);
+      }
       pointGeo.vectors.push(vector);
       pointGeo.colors.push(new THREE.Color(0xffffff));
     }

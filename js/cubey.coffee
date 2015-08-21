@@ -1,4 +1,4 @@
-class Roller
+class Cubey
 	numberOfThings = 30
 	numberOfStars  = 2000
 	rotateBy = 0.04
@@ -63,10 +63,14 @@ class Roller
 		starGeo = new THREE.Geometry
 		for i in [1..numberOfStars]
 			xyz = (Math.random() * 500 - 250 for i in [1..3])
-			star = new THREE.Vector3(xyz[0], xyz[1], xyz[2])
+			star = new THREE.Vector3(xyz...)
+			colorValues = (Math.random() * 0.4 + 0.6 for i in [1..3])
 			starGeo.vertices.push(star)
+			starGeo.colors.push(new THREE.Color(colorValues...))
 		
-		material = new THREE.PointCloudMaterial({size: 0.5, color: 0xffffff});
+		material = new THREE.PointCloudMaterial
+			size: 0.5
+			vertexColors: THREE.VertexColors
 		stars = new THREE.PointCloud(starGeo, material);
 
 		stars.rotation.x = Math.random() * 6;

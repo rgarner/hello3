@@ -61,7 +61,7 @@ Explody = (function() {
     this.gui = new dat.GUI({
       height: 5 * 32 - 1
     });
-    this.gui.add(params, 'numberOfParticles').min(100).max(30000).step(100).onFinishChange((function(_this) {
+    this.gui.add(params, 'numberOfParticles').min(100).max(50000).step(100).onFinishChange((function(_this) {
       return function() {
         return _this.reInit();
       };
@@ -119,6 +119,7 @@ Explody = (function() {
     }
     material = new THREE.PointCloudMaterial({
       size: params.size,
+      sizeAttenuation: true,
       vertexColors: THREE.VertexColors
     });
     return new THREE.PointCloud(pointGeo, material);

@@ -50,7 +50,7 @@ class Explody
 		@gui = new dat.GUI({
 		    height : 5 * 32 - 1
 		});
-		@gui.add(params, 'numberOfParticles').min(100).max(30000).step(100).onFinishChange =>
+		@gui.add(params, 'numberOfParticles').min(100).max(50000).step(100).onFinishChange =>
 			@reInit()
 		@gui.add(params, 'size').min(0.5).max(10).step(0.3).onFinishChange =>
 			@reInit()
@@ -75,6 +75,7 @@ class Explody
 		
 		material = new THREE.PointCloudMaterial
 			size: params.size
+			sizeAttenuation: true
 			vertexColors: THREE.VertexColors
 
 		new THREE.PointCloud(pointGeo, material);

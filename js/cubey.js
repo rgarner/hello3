@@ -43,11 +43,9 @@ Roller = (function() {
   }
 
   Roller.prototype.onWindowResize = function() {
-    console.log('foo');
     this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
-    return console.log('bar');
+    return this.renderer.setSize(window.innerWidth, window.innerHeight);
   };
 
   generateLights = function() {

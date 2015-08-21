@@ -25,12 +25,10 @@ class Roller
 		window.addEventListener( 'resize', @onWindowResize, false )
 
 	onWindowResize: =>
-		console.log 'foo'
 		@camera.aspect = window.innerWidth / window.innerHeight
 		@camera.updateProjectionMatrix()
 
 		@renderer.setSize( window.innerWidth, window.innerHeight )
-		console.log 'bar'
 
 	generateLights = ->
 		ambientLight = new THREE.AmbientLight( 0x332222 )
